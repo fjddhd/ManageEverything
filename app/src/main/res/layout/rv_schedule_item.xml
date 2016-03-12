@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+    card_view:cardCornerRadius="5dp"
+    card_view:cardBackgroundColor="#afff"
+    android:layout_margin="5dp"
+    android:padding="5dp"
+    card_view:cardElevation="4dp"
+
+
+    android:id="@+id/card">
+
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="3dp"
+            android:textColor="#303f9f"
+            android:textSize="20sp"
+            android:id="@+id/card_tvtitle"/>
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="6dp"
+            android:paddingRight="3dp"
+            android:id="@+id/iv_off"
+            android:scaleType="fitXY"
+            android:src="@drawable/danchahao_24dp"
+            />
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_toLeftOf="@+id/iv_off"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="6dp"
+            android:layout_marginRight="8dp"
+            android:id="@+id/iv_edit"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_unfold_more_24dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/card_tvtitle"
+            android:layout_marginTop="2dp"
+            android:gravity="center_horizontal"
+            android:textColor="#303f9f"
+            android:textSize="16sp"
+            android:maxLines="2"
+            android:id="@+id/card_tvcontent"/>
+        <fujingdong.com.manageeverything.View.Mslider
+            android:id="@+id/sliderprogress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/card_tvcontent"
+            android:layout_marginTop="2dp"
+            android:background="#303f9f"
+            android:visibility="gone"
+            card_view:max="100"
+            card_view:min="0"
+            card_view:showNumberIndicator="true" />
+        <com.gc.materialdesign.views.ButtonRectangle
+            android:id="@+id/btn_complete"
+            android:layout_below="@+id/sliderprogress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+
+            android:layout_centerHorizontal="true"
+            android:background="#303f9f"
+            android:visibility="gone"
+            android:text="我要完成它！" />
+    </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>
+
