@@ -2,8 +2,14 @@ package fujingdong.com.manageeverything.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +42,16 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
     @Override
     public mViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v=View.inflate(context, R.layout.rv_schedule_item, null);
+//        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_schedule_item, parent, false);
         final mViewHolder holder = new mViewHolder(v);
+//        v.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                int position = holder.getPosition();
+//                Toast.makeText(v.getContext(), "Item click. Position:" +
+//                        position, Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
 
 
@@ -61,9 +76,17 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
             public void onClick(View v) {
                 //“编辑“按钮的点击事件，用于slider的显示和隐藏
                 if (holder.slider.getVisibility()==View.GONE){
+                    //如果进度条处于隐藏状态，按下按钮，则会把进度条展示出来，并且更改图标，然后再判断完成按钮需不需要展示
                     holder.slider.setVisibility(View.VISIBLE);
                     holder.iv_edit.setImageResource(R.drawable.ic_unfold_less_24dp);
-                }else{
+                    if (holder.slider.getValue()==holder.slider.getMax()){//如果此时进度条数值等于最大值，那就显示完成按钮
+                        holder.cardBr.setVisibility(View.VISIBLE);
+                    }
+
+                }else{//如果进度条处于非隐藏状态，点击按钮，会把进度条隐藏并更改按钮图片，如果这个时候完成按钮也是显示的，则也要隐藏它
+                    if (holder.cardBr.getVisibility()==View.VISIBLE){//如果此时完成按钮处于非隐藏状态，那也需要将完成按钮一并隐藏掉
+                        holder.cardBr.setVisibility(View.GONE);
+                    }
                     holder.slider.setVisibility(View.GONE);
                     holder.iv_edit.setImageResource(R.drawable.ic_unfold_more_24dp);
                 }
@@ -79,7 +102,56 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
                         @Override
                         public void onClick(View v) {
                             //“完成”按钮点击事件
+                            holder.iv_finish.setVisibility(View.VISIBLE);
 
+                            holder.iv_edit.setVisibility(View.GONE);
+                            AlphaAnimation alpha=new AlphaAnimation(0,1);
+                            alpha.setDuration(2000);//时间
+                            alpha.setFillAfter(true);//保持动画状态
+                            AlphaAnimation alpha1=new AlphaAnimation(1,0);
+                            alpha1.setDuration(2000);//时间
+                            alpha1.setFillAfter(true);//保持动画状态
+                            TranslateAnimation ta1=new TranslateAnimation(Animation.RELATIVE_TO_SELF,0,Animation.RELATIVE_TO_SELF,0.5f
+                            ,Animation.RELATIVE_TO_SELF,0,Animation.RELATIVE_TO_SELF,1);
+                            ta1.setDuration(1500);//时间
+                            ta1.setFillAfter(true);//保持动画状态
+                            TranslateAnimation ta2=new TranslateAnimation(Animation.RELATIVE_TO_SELF,0,Animation.RELATIVE_TO_SELF,-0.5f
+                                    ,Animation.RELATIVE_TO_SELF,0,Animation.RELATIVE_TO_SELF,-1);
+                            ta2.setDuration(1500);//时间
+                            ta2.setFillAfter(true);//保持动画状态
+                            ScaleAnimation scale = new ScaleAnimation(1, 0, 1, 0, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                            scale.setDuration(2000);//时间
+                            scale.setFillAfter(true);//保持动画状态
+                            ScaleAnimation scale1 = new ScaleAnimation(1, 0, 1, 0, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                            scale1.setDuration(2000);//时间
+                            scale1.setFillAfter(true);//保持动画状态
+                            AnimationSet set1=new AnimationSet(false);
+                            AnimationSet set2=new AnimationSet(false);
+                            set1.addAnimation(scale);
+                            set1.addAnimation(ta1);
+                            set2.addAnimation(scale1);
+                            set2.addAnimation(ta2);
+                            holder.slider.startAnimation(set1);
+                            holder.cardBr.startAnimation(set2);
+                            set1.setAnimationListener(new Animation.AnimationListener() {
+                                @Override
+                                public void onAnimationStart(Animation animation) {
+
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animation animation) {
+                                    holder.cardBr.setVisibility(View.GONE);
+                                    holder.slider.setVisibility(View.GONE);
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(Animation animation) {
+
+                                }
+                            });
+                            holder.iv_edit.startAnimation(alpha1);
+                            holder.iv_finish.startAnimation(alpha);
                         }
                     });
                 }else{
@@ -103,6 +175,7 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
         public ButtonRectangle cardBr;
         public ImageView iv_edit;
         public ImageView iv_close;
+        public ImageView iv_finish;
 
 
         public mViewHolder(View itemView) {
@@ -113,6 +186,7 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
             cardBr = (ButtonRectangle) itemView.findViewById(R.id.btn_complete);
             iv_edit= (ImageView) itemView.findViewById(R.id.iv_edit);
             iv_close= (ImageView) itemView.findViewById(R.id.iv_off);
+            iv_finish= (ImageView) itemView.findViewById(R.id.iv_finish);
 
 
 

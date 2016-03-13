@@ -7,11 +7,17 @@
     card_view:cardCornerRadius="5dp"
     card_view:cardBackgroundColor="#afff"
     android:layout_margin="5dp"
-    android:padding="5dp"
     card_view:cardElevation="4dp"
-
-
     android:id="@+id/card">
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/done_24dp"
+        android:scaleType="fitXY"
+        android:id="@+id/iv_finish"
+        android:visibility="gone"/>
 
 
 
