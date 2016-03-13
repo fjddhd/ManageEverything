@@ -79,16 +79,66 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
                     //如果进度条处于隐藏状态，按下按钮，则会把进度条展示出来，并且更改图标，然后再判断完成按钮需不需要展示
                     holder.slider.setVisibility(View.VISIBLE);
                     holder.iv_edit.setImageResource(R.drawable.ic_unfold_less_24dp);
+                    AlphaAnimation alpha=new AlphaAnimation(0,1);
+                    alpha.setDuration(1500);//时间
+                    alpha.setFillAfter(true);//保持动画状态
+                    holder.slider.startAnimation(alpha);
                     if (holder.slider.getValue()==holder.slider.getMax()){//如果此时进度条数值等于最大值，那就显示完成按钮
-                        holder.cardBr.setVisibility(View.VISIBLE);
+                        holder.cardBr.setVisibility(View.VISIBLE);//此时保留了关闭时的缩放到最小的动画，需要动画展示出来
+                        ScaleAnimation scale3 = new ScaleAnimation(0, 1, 0, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                        scale3.setDuration(1500);//时间
+                        scale3.setFillAfter(true);//保持动画状态
+                        holder.cardBr.startAnimation(scale3);
+
                     }
 
                 }else{//如果进度条处于非隐藏状态，点击按钮，会把进度条隐藏并更改按钮图片，如果这个时候完成按钮也是显示的，则也要隐藏它
                     if (holder.cardBr.getVisibility()==View.VISIBLE){//如果此时完成按钮处于非隐藏状态，那也需要将完成按钮一并隐藏掉
-                        holder.cardBr.setVisibility(View.GONE);
+                        ScaleAnimation scale2 = new ScaleAnimation(1, 0, 1, 0, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                        scale2.setDuration(1500);//时间
+                        scale2.setFillAfter(true);//保持动画状态
+                        holder.cardBr.startAnimation(scale2);
+                        scale2.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                holder.cardBr.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+
+                            }
+                        });
+
                     }
-                    holder.slider.setVisibility(View.GONE);
-                    holder.iv_edit.setImageResource(R.drawable.ic_unfold_more_24dp);
+                    holder.iv_edit.setImageResource(R.drawable.ic_unfold_more_24dp);//先换图标体验更好
+                    AlphaAnimation alpha1=new AlphaAnimation(1,0);
+                    alpha1.setDuration(1500);//时间
+                    alpha1.setFillAfter(true);//保持动画状态
+                    holder.slider.startAnimation(alpha1);
+                    alpha1.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            holder.slider.setVisibility(View.GONE);
+
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
                 }
             }
         });
@@ -98,18 +148,21 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
             public void onValueChanged(int value) {
                 if (value==holder.slider.getMax()) {
                     holder.cardBr.setVisibility(View.VISIBLE);
+                    ScaleAnimation scale0 = new ScaleAnimation(0, 1, 0, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                    scale0.setDuration(1500);//时间
+                    scale0.setFillAfter(true);//保持动画状态
+                    holder.cardBr.startAnimation(scale0);
                     holder.cardBr.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             //“完成”按钮点击事件
                             holder.iv_finish.setVisibility(View.VISIBLE);
-
                             holder.iv_edit.setVisibility(View.GONE);
                             AlphaAnimation alpha=new AlphaAnimation(0,1);
-                            alpha.setDuration(2000);//时间
+                            alpha.setDuration(1500);//时间
                             alpha.setFillAfter(true);//保持动画状态
                             AlphaAnimation alpha1=new AlphaAnimation(1,0);
-                            alpha1.setDuration(2000);//时间
+                            alpha1.setDuration(1500);//时间
                             alpha1.setFillAfter(true);//保持动画状态
                             TranslateAnimation ta1=new TranslateAnimation(Animation.RELATIVE_TO_SELF,0,Animation.RELATIVE_TO_SELF,0.5f
                             ,Animation.RELATIVE_TO_SELF,0,Animation.RELATIVE_TO_SELF,1);
@@ -120,10 +173,10 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
                             ta2.setDuration(1500);//时间
                             ta2.setFillAfter(true);//保持动画状态
                             ScaleAnimation scale = new ScaleAnimation(1, 0, 1, 0, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                            scale.setDuration(2000);//时间
+                            scale.setDuration(1500);//时间
                             scale.setFillAfter(true);//保持动画状态
                             ScaleAnimation scale1 = new ScaleAnimation(1, 0, 1, 0, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                            scale1.setDuration(2000);//时间
+                            scale1.setDuration(1500);//时间
                             scale1.setFillAfter(true);//保持动画状态
                             AnimationSet set1=new AnimationSet(false);
                             AnimationSet set2=new AnimationSet(false);
@@ -154,8 +207,28 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
                             holder.iv_finish.startAnimation(alpha);
                         }
                     });
-                }else{
-                    holder.cardBr.setVisibility(View.GONE);
+                }else{//数值不等于最大值
+                    ScaleAnimation scale4 = new ScaleAnimation(1, 0, 1,0, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                    scale4.setDuration(1500);//时间
+                    scale4.setFillAfter(true);//保持动画状态
+                    holder.cardBr.startAnimation(scale4);
+                    scale4.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            holder.cardBr.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+
                 }
             }
         });
