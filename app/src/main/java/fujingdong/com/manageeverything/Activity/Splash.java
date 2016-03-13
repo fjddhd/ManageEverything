@@ -3,6 +3,7 @@ package fujingdong.com.manageeverything.Activity;
 import android.animation.Animator;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -29,6 +30,7 @@ public class Splash extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//禁止横屏
         setContentView(R.layout.splash);
         ButterKnife.inject(this);
         initAnimation();
