@@ -48,13 +48,13 @@ public class Setting extends BaseActivity implements View.OnClickListener{
             case R.id.itemButtons1:
                 Intent i=new Intent(Setting.this,Schedule.class);
                 startActivity(i);
-                finish();
+//                finish();
 
                 break;
             case R.id.itemButtons2:
                 Intent ii=new Intent(Setting.this,Setschedule.class);
                 startActivity(ii);
-                finish();
+//                finish();
                 break;
             case R.id.itemButtons3:
                 showAlertDialog();

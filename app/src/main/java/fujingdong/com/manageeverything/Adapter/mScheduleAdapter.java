@@ -196,6 +196,7 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
                                 public void onAnimationEnd(Animation animation) {
                                     holder.cardBr.setVisibility(View.GONE);
                                     holder.slider.setVisibility(View.GONE);
+                                    holder.iv_edit.setClickable(false);//关闭已经隐藏的edit键的点击能力
                                 }
 
                                 @Override
