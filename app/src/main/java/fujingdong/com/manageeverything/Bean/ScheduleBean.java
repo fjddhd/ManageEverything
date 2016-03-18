@@ -8,11 +8,53 @@ public class ScheduleBean {
     public String content;
     public int progress;
     public int progressMax;
+    public int id;
 
-    public ScheduleBean(String title, String content, int progress, int progressMax) {
+    public ScheduleBean() {
+//        this.title = title;
+//        this.content = content;
+//        this.progress = progress;
+//        this.progressMax = progressMax;
+//        this.id=id;
+    }
+
+    public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setContent(String content) {
         this.content = content;
+    }
+
+    public void setProgress(int progress) {
         this.progress = progress;
+    }
+
+    public void setProgressMax(int progressMax) {
         this.progressMax = progressMax;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public int getProgressMax() {
+        return progressMax;
+    }
+
+    public int getId() {
+        return id;
     }
 }

@@ -9,6 +9,7 @@ import android.view.View;
 import com.gc.materialdesign.views.LayoutRipple;
 import com.nineoldandroids.view.ViewHelper;
 
+import fujingdong.com.manageeverything.Database.MDatabaseHelper;
 import fujingdong.com.manageeverything.R;
 
 /**
@@ -19,6 +20,7 @@ public class Setting extends BaseActivity implements View.OnClickListener{
 
     private AlertDialog clearAlertdialog;
     private View view;
+    private MDatabaseHelper mDatabaseHelper=new MDatabaseHelper(this,"mDatabase",null,1);
 
     @Override
     public void initView() {
@@ -83,6 +85,7 @@ public class Setting extends BaseActivity implements View.OnClickListener{
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //此处执行清除所有数据的操作！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！(要有finish和snackbar)
+                mDatabaseHelper.todelete(true,null);
             }
         });
         builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
