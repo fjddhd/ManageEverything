@@ -16,6 +16,7 @@ import fujingdong.com.manageeverything.Adapter.mScheduleAdapter;
 import fujingdong.com.manageeverything.Bean.ScheduleBean;
 import fujingdong.com.manageeverything.Database.MDatabaseHelper;
 import fujingdong.com.manageeverything.R;
+import fujingdong.com.manageeverything.Utils.RecycleViewDivider;
 
 /**
  * Created by Administrator on 2016/3/10.
@@ -42,7 +43,8 @@ public class Schedule extends BaseActivity {
             RecyclerView rv = (RecyclerView) v.findViewById(R.id.rv_schedule);
             rv.setHasFixedSize(true);//使RecyclerView保持固定的大小,这样会提高RecyclerView的性能。
             rv.setLayoutManager(new LinearLayoutManager(this));
-            rv.setAdapter(new mScheduleAdapter(this, list));
+            rv.setAdapter(new mScheduleAdapter(this, list,mDatabaseHelper));
+            rv.addItemDecoration(new RecycleViewDivider(this,LinearLayoutManager.VERTICAL,10,R.color.light_gery));//添加分割线，方法在utils中，其中高度是像素
         }
 
 
@@ -66,7 +68,7 @@ public class Schedule extends BaseActivity {
 //        s2.setProgressMax(44);
 //        list.add(s1);
 //        list.add(s2);
-//        SQLiteDatabase writableDatabase = mDatabaseHelper.getWritableDatabase();
+
         initDatabaseData();
 
 
@@ -75,7 +77,8 @@ public class Schedule extends BaseActivity {
     /**
      * 将数据库中所有数据加载进来
      */
-    private void initDatabaseData(){
+    public void initDatabaseData(){
+        list.clear();
         Cursor all = mDatabaseHelper.getAll(null, "scheduleId");
         for(all.moveToFirst();!all.isAfterLast();all.moveToNext()){
             if (all!=null) {
@@ -86,11 +89,13 @@ public class Schedule extends BaseActivity {
                 scheduleBean.setProgress(Integer.parseInt(all.getString(3)));
                 scheduleBean.setProgressMax(Integer.parseInt(all.getString(4)));
                 //还有个备注没设置
+//                System.out.println(scheduleBean.toString());
                 list.add(scheduleBean);
                 //注意！！！（数据库中第一个id是1，list中第一个是0）
-
             }
         }
+        all.close();
+        mDatabaseHelper.close();
     }
 
 

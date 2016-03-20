@@ -85,7 +85,9 @@ public class Setting extends BaseActivity implements View.OnClickListener{
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //此处执行清除所有数据的操作！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！(要有finish和snackbar)
+
                 mDatabaseHelper.todelete(true,null);
+                mDatabaseHelper.close();
             }
         });
         builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -98,6 +100,11 @@ public class Setting extends BaseActivity implements View.OnClickListener{
         });
         builder.show();
     }
+
+    /**
+     * 这个是控件带的点击波纹效果
+     * @param layoutRipple
+     */
     private void setOriginRiple(final LayoutRipple layoutRipple){
 
         layoutRipple.post(new Runnable() {

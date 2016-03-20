@@ -1,6 +1,7 @@
 package fujingdong.com.manageeverything.Adapter;
 
 import android.content.Context;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +17,11 @@ import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.gc.materialdesign.views.Slider;
+import com.gc.materialdesign.widgets.SnackBar;
 
 import java.util.List;
 
+import fujingdong.com.manageeverything.Activity.BaseActivity;
 import fujingdong.com.manageeverything.Activity.Schedule;
 import fujingdong.com.manageeverything.Bean.ScheduleBean;
 import fujingdong.com.manageeverything.Database.MDatabaseHelper;
@@ -29,15 +32,15 @@ import fujingdong.com.manageeverything.R;
  */
 public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mViewHolder> {
 
-    public Context context;
+    public Schedule context;
     public List<ScheduleBean> list;
-//    private MDatabaseHelper mDatabaseHelper=new MDatabaseHelper(context,"mDatabase",null,1);
+    private MDatabaseHelper mDatabaseHelper;
 
 
-
-    public mScheduleAdapter(Context ctx, List<ScheduleBean> list) {
+    public mScheduleAdapter(Schedule ctx, List<ScheduleBean> list, MDatabaseHelper mDatabaseHelper) {
         this.context = ctx;
         this.list=list;
+        this.mDatabaseHelper=mDatabaseHelper;
     }
 
 
@@ -66,11 +69,31 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
         holder.cardTvContent.setText(list.get(position).content);
         holder.slider.setMax(list.get(position).progressMax);
         holder.slider.setValue(list.get(position).progress);
+        holder.idRecord.setText(list.get(position).getId() + "");//这个隐藏的textview用于存储主键
+        final String id= (String) holder.idRecord.getText();
+
 
         holder.iv_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //“关闭”按钮的点击事件
+                //“关闭”按钮的点击事件(最好设置一个dialog)
+                try {
+                    mDatabaseHelper.todelete(false, id);
+                    mDatabaseHelper.close();
+                    context.initDatabaseData();
+//                    schedule.initDatabaseData();
+                    notifyDataSetChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Snackbar.make(v,"删除未成功",Snackbar.LENGTH_SHORT).setAction("我知道啦", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    }).show();
+
+
+                }
             }
         });
         holder.iv_edit.setOnClickListener(new View.OnClickListener() {
@@ -252,6 +275,7 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
         public ImageView iv_edit;
         public ImageView iv_close;
         public ImageView iv_finish;
+        public TextView idRecord;
 
 
         public mViewHolder(View itemView) {
@@ -263,6 +287,7 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
             iv_edit= (ImageView) itemView.findViewById(R.id.iv_edit);
             iv_close= (ImageView) itemView.findViewById(R.id.iv_off);
             iv_finish= (ImageView) itemView.findViewById(R.id.iv_finish);
+            idRecord= (TextView) itemView.findViewById(R.id.item_idrecord);
 
 
 

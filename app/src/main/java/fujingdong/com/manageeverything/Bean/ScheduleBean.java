@@ -10,6 +10,17 @@ public class ScheduleBean {
     public int progressMax;
     public int id;
 
+    @Override
+    public String toString() {
+        return "ScheduleBean{" +
+                "title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", progress=" + progress +
+                ", progressMax=" + progressMax +
+                ", id=" + id +
+                '}';
+    }
+
     public ScheduleBean() {
 //        this.title = title;
 //        this.content = content;
