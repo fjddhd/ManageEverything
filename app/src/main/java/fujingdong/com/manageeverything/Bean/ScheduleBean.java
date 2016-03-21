@@ -9,6 +9,7 @@ public class ScheduleBean {
     public int progress;
     public int progressMax;
     public int id;
+    public String beizhu;
 
     @Override
     public String toString() {
@@ -18,7 +19,16 @@ public class ScheduleBean {
                 ", progress=" + progress +
                 ", progressMax=" + progressMax +
                 ", id=" + id +
+                ", beizhu='" + beizhu + '\'' +
                 '}';
+    }
+
+    public String getBeizhu() {
+        return beizhu;
+    }
+
+    public void setBeizhu(String beizhu) {
+        this.beizhu = beizhu;
     }
 
     public ScheduleBean() {

@@ -88,7 +88,8 @@ public class Schedule extends BaseActivity {
                 scheduleBean.setContent(all.getString(2));
                 scheduleBean.setProgress(Integer.parseInt(all.getString(3)));
                 scheduleBean.setProgressMax(Integer.parseInt(all.getString(4)));
-                //还有个备注没设置
+                
+                scheduleBean.setBeizhu(all.getString(5));
 //                System.out.println(scheduleBean.toString());
                 list.add(scheduleBean);
                 //注意！！！（数据库中第一个id是1，list中第一个是0）

@@ -1,14 +1,18 @@
 package fujingdong.com.manageeverything.Adapter;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
@@ -71,29 +75,58 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
         holder.slider.setValue(list.get(position).progress);
         holder.idRecord.setText(list.get(position).getId() + "");//这个隐藏的textview用于存储主键
         final String id= (String) holder.idRecord.getText();
+        //判断是否点过完成
+        if ("ok".equals(list.get(position).getBeizhu())){//判断不能反过来，因为如果得到的备注是null，null不具备equal方法
+            holder.iv_finish.setVisibility(View.VISIBLE);
+            holder.iv_edit.setVisibility(View.GONE);
+            holder.cardBr.setVisibility(View.GONE);
+            holder.slider.setVisibility(View.GONE);
+            holder.iv_edit.setClickable(false);//关闭已经隐藏的edit键的点击能力
+        }
 
 
         holder.iv_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //“关闭”按钮的点击事件(最好设置一个dialog)
-                try {
-                    mDatabaseHelper.todelete(false, id);
-                    mDatabaseHelper.close();
-                    context.initDatabaseData();
-//                    schedule.initDatabaseData();
-                    notifyDataSetChanged();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Snackbar.make(v,"删除未成功",Snackbar.LENGTH_SHORT).setAction("我知道啦", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+                RotateAnimation rotate = new RotateAnimation(0, -45, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                rotate.setDuration(1000);//旋转时间
+                rotate.setFillAfter(true);//保持动画状态
+                holder.iv_close.startAnimation(rotate);
+                rotate.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
 
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        try {
+                            mDatabaseHelper.todelete(false, id);
+                            mDatabaseHelper.close();
+                            context.initDatabaseData();
+//                    schedule.initDatabaseData();//一定会崩，用来测试snackbar
+                            notifyDataSetChanged();
+                            if (list.isEmpty()){//当列表空了的时候需要重新加载 schedule_nothing 这个空提醒布局
+                                context.initView();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Snackbar.make(holder.cardBr,"删除未成功",Snackbar.LENGTH_SHORT).setAction("我知道啦", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                }
+                            }).show();
                         }
-                    }).show();
+                    }
 
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
 
-                }
+                    }
+                });
+
             }
         });
         holder.iv_edit.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +141,9 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
                     alpha.setDuration(1500);//时间
                     alpha.setFillAfter(true);//保持动画状态
                     holder.slider.startAnimation(alpha);
+//                    System.out.println("按钮准备开始显示啊！！");
                     if (holder.slider.getValue()==holder.slider.getMax()){//如果此时进度条数值等于最大值，那就显示完成按钮
+//                        System.out.println("按钮显示啊！！");
                         holder.cardBr.setVisibility(View.VISIBLE);//此时保留了关闭时的缩放到最小的动画，需要动画展示出来
                         ScaleAnimation scale3 = new ScaleAnimation(0, 1, 0, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                         scale3.setDuration(1500);//时间
@@ -145,7 +180,6 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
                     AlphaAnimation alpha1=new AlphaAnimation(1,0);
                     alpha1.setDuration(1500);//时间
                     alpha1.setFillAfter(true);//保持动画状态
-                    holder.slider.startAnimation(alpha1);
                     alpha1.setAnimationListener(new Animation.AnimationListener() {
                         @Override
                         public void onAnimationStart(Animation animation) {
@@ -164,6 +198,7 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
 
                         }
                     });
+                    holder.slider.startAnimation(alpha1);
                 }
             }
         });
@@ -171,7 +206,18 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
         holder.slider.setOnValueChangedListener(new Slider.OnValueChangedListener() {
             @Override
             public void onValueChanged(int value) {
-                if (value==holder.slider.getMax()) {
+                //数据库更新操作，切记不要改别的数值，不然会报错
+                SQLiteDatabase writableDatabase = mDatabaseHelper.getWritableDatabase();
+                ContentValues cv=new ContentValues();
+                String[] args={id};
+                cv.put("value",value);
+                writableDatabase.update("mDatabase", cv, "scheduleId=?",
+                        args);
+                writableDatabase.close();
+                mDatabaseHelper.close();
+
+                if (value==holder.slider.getMax()) {//数值等于最大值
+
                     holder.cardBr.setVisibility(View.VISIBLE);
                     ScaleAnimation scale0 = new ScaleAnimation(0, 1, 0, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                     scale0.setDuration(1500);//时间
@@ -181,6 +227,16 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
                         @Override
                         public void onClick(View v) {
                             //“完成”按钮点击事件
+                            //数据库更新操作，在备注存储点击过完成，切记不要改别的数值，不然会报错
+                            SQLiteDatabase writableDatabase = mDatabaseHelper.getWritableDatabase();
+                            ContentValues cv=new ContentValues();
+                            String[] args={id};
+                            cv.put("beizhu","ok");
+                            writableDatabase.update("mDatabase", cv, "scheduleId=?",
+                                    args);
+                            writableDatabase.close();
+                            mDatabaseHelper.close();
+
                             holder.iv_finish.setVisibility(View.VISIBLE);
                             holder.iv_edit.setVisibility(View.GONE);
                             AlphaAnimation alpha=new AlphaAnimation(0,1);
