@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#303f9f</item>
         <item name="colorPrimaryDark">#1a237e</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">#303f9f</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 

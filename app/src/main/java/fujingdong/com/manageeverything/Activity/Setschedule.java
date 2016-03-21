@@ -1,7 +1,10 @@
 package fujingdong.com.manageeverything.Activity;
 
+import android.support.design.widget.TextInputLayout;
+import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 
@@ -18,16 +21,12 @@ public class Setschedule extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
-        View view=View.inflate(Setschedule.this, R.layout.setschedule,rlBase);
-        Button btn= (Button) view.findViewById(R.id.dianwo);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDatabaseHelper.insert("title1","content1","50","100",null);
-                mDatabaseHelper.insert("title1","content1","50","100",null);
-                mDatabaseHelper.insert("title1","content1","50","100",null);
-            }
-        });
+        View view=View.inflate(Setschedule.this, R.layout.set_schedule,rlBase);
+        TextInputLayout til1= (TextInputLayout) view.findViewById(R.id.til1);
+        til1.setHint("请输入标题");
+        EditText editText1 = til1.getEditText();
+        Editable text1 = editText1.getText();
+//
 
     }
 
