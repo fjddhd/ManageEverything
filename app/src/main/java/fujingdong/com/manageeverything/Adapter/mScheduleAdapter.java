@@ -1,7 +1,9 @@
 package fujingdong.com.manageeverything.Adapter;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -39,6 +41,7 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
     public Schedule context;
     public List<ScheduleBean> list;
     private MDatabaseHelper mDatabaseHelper;
+    private AlertDialog clearAlertdialog;
 
 
     public mScheduleAdapter(Schedule ctx, List<ScheduleBean> list, MDatabaseHelper mDatabaseHelper) {
@@ -88,10 +91,10 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
         holder.iv_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //“关闭”按钮的点击事件(最好设置一个dialog)
-                RotateAnimation rotate = new RotateAnimation(0, -45, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                //“关闭”按钮的点击事件(最好设置一个dialog，已经设置)
+                final RotateAnimation rotate = new RotateAnimation(0, -45, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                 rotate.setDuration(1000);//旋转时间
-                rotate.setFillAfter(true);//保持动画状态
+                rotate.setFillAfter(false);//保持动画状态，这里由于会在某些时候出现bug，所以不保持以避免这个bug
                 holder.iv_close.startAnimation(rotate);
                 rotate.setAnimationListener(new Animation.AnimationListener() {
                     @Override
@@ -101,24 +104,51 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        try {
-                            mDatabaseHelper.todelete(false, id);
-                            mDatabaseHelper.close();
-                            context.initDatabaseData();
-//                    schedule.initDatabaseData();//一定会崩，用来测试snackbar
-                            notifyDataSetChanged();
-                            if (list.isEmpty()){//当列表空了的时候需要重新加载 schedule_nothing 这个空提醒布局
-                                context.initView();
+                        //dialog
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        clearAlertdialog = builder.create();
+                        builder.setTitle("清除日程");
+                        builder.setMessage("该操作无法恢复，请再次确认是否需要清除这个日程");
+                        builder.setNegativeButton("先不清除", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                clearAlertdialog.dismiss();
                             }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Snackbar.make(holder.cardBr,"删除未成功",Snackbar.LENGTH_SHORT).setAction("我知道啦", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
+                        });
+                        builder.setPositiveButton("清除吧！", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    mDatabaseHelper.todelete(false, id);
+                                    mDatabaseHelper.close();
+                                    context.initDatabaseData();
+//                    schedule.initDatabaseData();//一定会崩，用来测试snackbar
+//                            notifyDataSetChanged();//用这个容易出现异常
+                                    notifyItemRemoved(position);
+                                    if (list.isEmpty()) {//当列表空了的时候需要重新加载 schedule_nothing 这个空提醒布局
+                                        context.initView();
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Snackbar.make(holder.cardBr, "删除未成功", Snackbar.LENGTH_SHORT).setAction("我知道啦", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
 
+                                        }
+                                    }).show();
                                 }
-                            }).show();
-                        }
+
+                            }
+                        });
+                        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+                                //什么也不做
+                                clearAlertdialog.dismiss();
+
+                            }
+                        });
+                        builder.show();
                     }
 
                     @Override
@@ -126,6 +156,8 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
 
                     }
                 });
+
+
 
             }
         });
