@@ -2,10 +2,12 @@ package fujingdong.com.manageeverything.Activity;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonRectangle;
 
@@ -26,11 +28,13 @@ public class Schedule extends BaseActivity {
 
     private MDatabaseHelper mDatabaseHelper=new MDatabaseHelper(this,"mDatabase",null,1);
     public List<ScheduleBean> list=new ArrayList<ScheduleBean>();
+    private View v;
+
     @Override
     public void initView() {
         super.initView();
         if (list.isEmpty()){
-            View v = View.inflate(Schedule.this, R.layout.schedule_nothing, rlBase);
+            v = View.inflate(Schedule.this, R.layout.schedule_nothing, rlBase);
             TextView textno= (TextView) v.findViewById(R.id.textnothing);
             textno.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -82,16 +86,25 @@ public class Schedule extends BaseActivity {
         Cursor all = mDatabaseHelper.getAll(null, "scheduleId");
         for(all.moveToFirst();!all.isAfterLast();all.moveToNext()){
             if (all!=null) {
-                ScheduleBean scheduleBean = new ScheduleBean();
-                scheduleBean.setId(Integer.parseInt(all.getString(0)));
-                scheduleBean.setTitle(all.getString(1));
-                scheduleBean.setContent(all.getString(2));
-                scheduleBean.setProgress(Integer.parseInt(all.getString(3)));
-                scheduleBean.setProgressMax(Integer.parseInt(all.getString(4)));
-                
-                scheduleBean.setBeizhu(all.getString(5));
+                try {
+                    ScheduleBean scheduleBean = new ScheduleBean();
+                    scheduleBean.setId(Integer.parseInt(all.getString(0)));
+                    scheduleBean.setTitle(all.getString(1));
+                    scheduleBean.setContent(all.getString(2));
+                    scheduleBean.setProgress(Integer.parseInt(all.getString(3)));
+                    scheduleBean.setProgressMax(Integer.parseInt(all.getString(4)));
+
+                    scheduleBean.setBeizhu(all.getString(5));
 //                System.out.println(scheduleBean.toString());
-                list.add(scheduleBean);
+                    list.add(scheduleBean);
+                } catch (NumberFormatException e) {
+                    Snackbar.make(v,"数据库数据加载出错",Snackbar.LENGTH_SHORT).setAction("我知道啦", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    }).show();
+                }
                 //注意！！！（数据库中第一个id是1，list中第一个是0）
             }
         }
