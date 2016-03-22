@@ -51,8 +51,10 @@ public class Setting extends BaseActivity implements View.OnClickListener{
     @Override
     protected void onResume() {
         super.onResume();
+        System.out.println("resume");
         PrefUtils.setBoolean(this, "isfanhuied", false);//把是否点过一次返回初始化为没点过
     }
+
 
     /**
      * 用于监听返回键，防止点一次返回键就关闭了,初始化也放到resume方法里面一份

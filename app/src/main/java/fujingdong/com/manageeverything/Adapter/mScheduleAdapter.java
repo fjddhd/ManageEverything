@@ -46,6 +46,7 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
     private MDatabaseHelper mDatabaseHelper;
     private AlertDialog clearAlertdialog;
     private AlertDialog changetitleAlertdialog;
+    private AlertDialog changecontentAlertdialog;
 
 
     public mScheduleAdapter(Schedule ctx, List<ScheduleBean> list, MDatabaseHelper mDatabaseHelper) {
@@ -89,12 +90,19 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
             holder.cardBr.setVisibility(View.GONE);
             holder.slider.setVisibility(View.GONE);
             holder.iv_edit.setClickable(false);//关闭已经隐藏的edit键的点击能力
-            holder.cardTvTitle.setLongClickable(false);//关闭标题的长按修改事件,由于必须设置长点监听才能有效，所以再这不用
+//            holder.cardTvTitle.setLongClickable(false);//关闭标题的长按修改事件,由于必须设置长点监听才能有效，所以再这不用
         }else {//只有没完成的时候才给设置长按监听显示dialog
             holder.cardTvTitle.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    showchangeDialog(id, position);
+                    showchangeTitleDialog(id, position);
+                    return false;
+                }
+            });
+            holder.cardTvContent.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    showchangeContentDialog(id,position);
                     return false;
                 }
             });
@@ -323,7 +331,8 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
                                     holder.cardBr.setVisibility(View.GONE);
                                     holder.slider.setVisibility(View.GONE);
                                     holder.iv_edit.setClickable(false);//关闭已经隐藏的edit键的点击能力
-                                    holder.cardTvTitle.setLongClickable(false);
+                                    holder.cardTvTitle.setLongClickable(false);//关闭长按
+                                    holder.cardTvContent.setLongClickable(false);//关闭长按
                                 }
 
                                 @Override
@@ -360,10 +369,18 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
                 }
             }
         });
+        //这两个tv设置一个触摸动画用于提醒
         holder.cardTvTitle.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 holder.cardTvTitle.startAnimation(scaleForTixing());
+                return false;
+            }
+        });
+        holder.cardTvContent.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                holder.cardTvContent.startAnimation(scaleForTixing());
                 return false;
             }
         });
@@ -374,12 +391,12 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
         return list.size();
     }
     private ScaleAnimation scaleForTixing(){
-        ScaleAnimation scale = new ScaleAnimation(1, 0.85f, 1,0.85f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        scale.setDuration(1000);//时间
+        ScaleAnimation scale = new ScaleAnimation(1, 0.95f, 1,0.95f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        scale.setDuration(500);//时间
         scale.setFillAfter(false);//保持动画状态
         return scale;
     }
-    private void showchangeDialog(final String id, final int position){
+    private void showchangeTitleDialog(final String id, final int position){
         AlertDialog.Builder builder =new AlertDialog.Builder(context);
         changetitleAlertdialog = builder.create();
         final View view= View.inflate(context,R.layout.change_title_dialog,null);
@@ -425,6 +442,53 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
             }
         });
         changetitleAlertdialog.show();
+    }
+    private void showchangeContentDialog(final String id, final int position){
+        AlertDialog.Builder builder =new AlertDialog.Builder(context);
+        changecontentAlertdialog = builder.create();
+        final View view= View.inflate(context,R.layout.change_content_dialog,null);
+//        System.out.println("出来吧对话框");
+        changecontentAlertdialog.setView(view);
+        final TextInputLayout tildDalogChangeTitle= (TextInputLayout) view.findViewById(R.id.til_dialog_changetitle);
+        ButtonFlat bfquxiao= (ButtonFlat) view.findViewById(R.id.bf_dialog_change_title_quxiao);
+        ButtonFlat bfqueren= (ButtonFlat) view.findViewById(R.id.bf_dialog_change_title_queren);
+        tildDalogChangeTitle.setHint("请输入新的描述");
+        bfqueren.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String s = tildDalogChangeTitle.getEditText().getText().toString().trim();
+                if (TextUtils.isEmpty(s)) {//框内是空的
+                    tildDalogChangeTitle.setError("描述不可以为空哦");
+                } else {
+                    tildDalogChangeTitle.setErrorEnabled(false);
+                    SQLiteDatabase writableDatabase = mDatabaseHelper.getWritableDatabase();
+                    ContentValues cv = new ContentValues();
+                    String[] args = {id};
+                    cv.put("content", s);
+                    writableDatabase.update("mDatabase", cv, "scheduleId=?",
+                            args);
+                    writableDatabase.close();
+                    changecontentAlertdialog.dismiss();
+                    context.initDatabaseData();
+                    notifyItemChanged(position);
+                }
+            }
+        });
+        bfquxiao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changecontentAlertdialog.dismiss();
+            }
+        });
+        changecontentAlertdialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                //什么也不做
+                changecontentAlertdialog.dismiss();
+
+            }
+        });
+        changecontentAlertdialog.show();
     }
 
     public static class mViewHolder extends RecyclerView.ViewHolder {

@@ -86,7 +86,7 @@ public class Setschedule extends BaseActivity {
                         public void onClick(View v) {
                         }
                     }).show();
-                }else if (Integer.parseInt(text3)>Integer.parseInt(text4)){
+                }else if (Integer.parseInt(text3)>=Integer.parseInt(text4)){
                     Snackbar.make(view,"目标进度要小于当前进度才可以哦",Snackbar.LENGTH_LONG).setAction("我明白啦", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
