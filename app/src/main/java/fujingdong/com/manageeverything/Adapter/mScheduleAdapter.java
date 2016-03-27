@@ -21,6 +21,7 @@ import java.util.List;
 
 import fujingdong.com.manageeverything.Activity.Schedule;
 import fujingdong.com.manageeverything.Bean.ScheduleBean;
+import fujingdong.com.manageeverything.Database.MDatabaseHelper;
 import fujingdong.com.manageeverything.R;
 
 /**
@@ -30,6 +31,7 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
 
     public Context context;
     public List<ScheduleBean> list;
+    private MDatabaseHelper mDatabaseHelper;
 
 
 

@@ -9,6 +9,7 @@ import java.util.List;
 
 import fujingdong.com.manageeverything.Adapter.mScheduleAdapter;
 import fujingdong.com.manageeverything.Bean.ScheduleBean;
+import fujingdong.com.manageeverything.Database.MDatabaseHelper;
 import fujingdong.com.manageeverything.R;
 
 /**
@@ -17,6 +18,7 @@ import fujingdong.com.manageeverything.R;
  */
 public class Schedule extends BaseActivity {
 
+    private MDatabaseHelper mDatabaseHelper;
     public List<ScheduleBean> list=new ArrayList<ScheduleBean>();
     @Override
     public void initView() {
@@ -36,19 +38,19 @@ public class Schedule extends BaseActivity {
         toolbartitle.setText("我的日程");
         ScheduleBean s1=new ScheduleBean("title1","content1",50,100);
         ScheduleBean s2=new ScheduleBean("title2","content2",50,100);
-        list.add(s1);
-        list.add(s2);
-        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师的撒",50,200));
-        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师的撒",50,200));
-        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师的撒",50,200));
-        list.add(new ScheduleBean("标题","撒的撒打是大幅度的范德萨范德萨发第三方的范德萨发算的撒的撒打算的实打实大师的撒",50,200));
-        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师的撒",50,200));
-        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师发送到发送到搞活动的恢复黄金分割进货价格的撒",50,200));
-        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实第三方第三方士大夫爽肤水的方法第三方第三方反倒是大师的撒",50,200));
-        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师的撒",50,200));
-        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师的撒",50,200));
-        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师的撒",50,200));
-        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师的撒",50,200));
+//        list.add(s1);
+//        list.add(s2);
+//        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师的撒",50,200));
+//        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师的撒",50,200));
+//        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师的撒",50,200));
+//        list.add(new ScheduleBean("标题","撒的撒打是大幅度的范德萨范德萨发第三方的范德萨发算的撒的撒打算的实打实大师的撒",50,200));
+//        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师的撒",50,200));
+//        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师发送到发送到搞活动的恢复黄金分割进货价格的撒",50,200));
+//        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实第三方第三方士大夫爽肤水的方法第三方第三方反倒是大师的撒",50,200));
+//        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师的撒",50,200));
+//        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师的撒",50,200));
+//        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师的撒",50,200));
+//        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师的撒",50,200));
 
 
     }
