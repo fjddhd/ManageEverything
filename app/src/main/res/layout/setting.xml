@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
     <View
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="80dp"
         android:background="#fff"></View>
 
         <com.gc.materialdesign.views.LayoutRipple
@@ -19,14 +19,14 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="62dp"
+                android:layout_marginLeft="52dp"
                 android:src="@drawable/schedu_24dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="136dp"
+                android:layout_marginLeft="126dp"
                 android:paddingBottom="5dp"
                 android:textColor="#303f9f"
                 android:textSize="30sp"
@@ -44,14 +44,14 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="62dp"
+                android:layout_marginLeft="52dp"
                 android:src="@drawable/setschedu_24dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="136dp"
+                android:layout_marginLeft="126dp"
                 android:paddingBottom="5dp"
                 android:textColor="#303f9f"
                 android:textSize="30sp"
@@ -69,14 +69,14 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="62dp"
+                android:layout_marginLeft="52dp"
                 android:src="@drawable/clear_24dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="136dp"
+                android:layout_marginLeft="126dp"
                 android:paddingBottom="5dp"
                 android:textColor="#303f9f"
                 android:textSize="30sp"

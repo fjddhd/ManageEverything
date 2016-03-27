@@ -4,12 +4,17 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.design.widget.Snackbar;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import com.gc.materialdesign.views.LayoutRipple;
 import com.nineoldandroids.view.ViewHelper;
 
+import fujingdong.com.manageeverything.Database.MDatabaseHelper;
 import fujingdong.com.manageeverything.R;
+import fujingdong.com.manageeverything.Utils.PrefUtils;
 
 /**
  * Created by Administrator on 2016/3/11.
@@ -19,6 +24,7 @@ public class Setting extends BaseActivity implements View.OnClickListener{
 
     private AlertDialog clearAlertdialog;
     private View view;
+    private MDatabaseHelper mDatabaseHelper=new MDatabaseHelper(this,"mDatabase",null,1);
 
     @Override
     public void initView() {
@@ -40,6 +46,36 @@ public class Setting extends BaseActivity implements View.OnClickListener{
     public void initData() {
         super.initData();
         toolbartitle.setText("控制台");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        System.out.println("resume");
+        PrefUtils.setBoolean(this, "isfanhuied", false);//把是否点过一次返回初始化为没点过
+    }
+
+
+    /**
+     * 用于监听返回键，防止点一次返回键就关闭了,初始化也放到resume方法里面一份
+     * @param keyCode
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode==KeyEvent.KEYCODE_BACK && event.getRepeatCount()==0){
+            if (!PrefUtils.getBoolean(this,"isfanhuied",false)){
+            Toast.makeText(this,"再按一次返回键可以退出",Toast.LENGTH_SHORT).show();
+            PrefUtils.setBoolean(this,"isfanhuied",true);
+            return true;
+            }else {
+                PrefUtils.setBoolean(this, "isfanhuied", false);//把是否点过一次返回初始化为没点过
+                finish();
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -82,7 +118,15 @@ public class Setting extends BaseActivity implements View.OnClickListener{
         builder.setPositiveButton("清除吧！", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //此处执行清除所有数据的操作！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！(要有finish和snackbar)
+                //此处执行清除所有数据的操作！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！(要有finish和)
+                mDatabaseHelper.todelete(true,null);
+                mDatabaseHelper.close();
+                Snackbar.make(view,"所有日程已被清除",Snackbar.LENGTH_SHORT).setAction("我知道啦", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).show();
             }
         });
         builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -95,6 +139,11 @@ public class Setting extends BaseActivity implements View.OnClickListener{
         });
         builder.show();
     }
+
+    /**
+     * 这个是控件带的点击波纹效果
+     * @param layoutRipple
+     */
     private void setOriginRiple(final LayoutRipple layoutRipple){
 
         layoutRipple.post(new Runnable() {
