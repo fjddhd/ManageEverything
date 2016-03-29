@@ -30,7 +30,11 @@ import fujingdong.com.manageeverything.Utils.RecycleViewDivider;
  */
 public class Schedule extends BaseActivity {
 
+<<<<<<< HEAD
+    private MDatabaseHelper mDatabaseHelper;
+=======
     private MDatabaseHelper mDatabaseHelper=new MDatabaseHelper(this,"mDatabase",null,1);
+>>>>>>> 38a2744dbd2ca36250fdb2f3e282912c6c5c1a8e
     public List<ScheduleBean> list=new ArrayList<ScheduleBean>();
     private View v;
 
@@ -66,6 +70,7 @@ public class Schedule extends BaseActivity {
     public void initData() {
         super.initData();
         toolbartitle.setText("我的日程");
+<<<<<<< HEAD
         toolbar.setNavigationIcon(R.drawable.arrow_left_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +80,25 @@ public class Schedule extends BaseActivity {
         });
 
 
+=======
+<<<<<<< HEAD
+        ScheduleBean s1=new ScheduleBean("title1","content1",50,100);
+        ScheduleBean s2=new ScheduleBean("title2","content2",50,100);
+//        list.add(s1);
+//        list.add(s2);
+//        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师的撒",50,200));
+//        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师的撒",50,200));
+//        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师的撒",50,200));
+//        list.add(new ScheduleBean("标题","撒的撒打是大幅度的范德萨范德萨发第三方的范德萨发算的撒的撒打算的实打实大师的撒",50,200));
+//        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师的撒",50,200));
+//        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师发送到发送到搞活动的恢复黄金分割进货价格的撒",50,200));
+//        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实第三方第三方士大夫爽肤水的方法第三方第三方反倒是大师的撒",50,200));
+//        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师的撒",50,200));
+//        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师的撒",50,200));
+//        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师的撒",50,200));
+//        list.add(new ScheduleBean("标题","撒的撒打算的撒的撒打算的实打实大师的撒",50,200));
+=======
+>>>>>>> 66cf93fc14209b0bd29170f37e32c14270db2246
 //        ScheduleBean s1=new ScheduleBean();
 //        ScheduleBean s2=new ScheduleBean();
 //        s1.setId(0);
@@ -110,6 +134,7 @@ public class Schedule extends BaseActivity {
                     scheduleBean.setContent(all.getString(2));
                     scheduleBean.setProgress(Integer.parseInt(all.getString(3)));
                     scheduleBean.setProgressMax(Integer.parseInt(all.getString(4)));
+>>>>>>> 38a2744dbd2ca36250fdb2f3e282912c6c5c1a8e
 
                     scheduleBean.setBeizhu(all.getString(5));
 //                System.out.println(scheduleBean.toString());

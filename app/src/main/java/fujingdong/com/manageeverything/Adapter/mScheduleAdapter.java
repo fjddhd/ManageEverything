@@ -47,9 +47,12 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
     public Schedule context;
     public List<ScheduleBean> list;
     private MDatabaseHelper mDatabaseHelper;
+<<<<<<< HEAD
+=======
     private AlertDialog clearAlertdialog;
     private AlertDialog changetitleAlertdialog;
     private AlertDialog changecontentAlertdialog;
+>>>>>>> 38a2744dbd2ca36250fdb2f3e282912c6c5c1a8e
 
 
     public mScheduleAdapter(Schedule ctx, List<ScheduleBean> list, MDatabaseHelper mDatabaseHelper) {
