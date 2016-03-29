@@ -28,11 +28,7 @@ public class MDatabaseHelper extends SQLiteOpenHelper {
     private static final int version = 1; //数据库版本
 
     public MDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-<<<<<<< HEAD
-        super(context, name, factory, version);
-=======
         super(context, name, null, version);
->>>>>>> 66cf93fc14209b0bd29170f37e32c14270db2246
         //第三个参数CursorFactory指定在执行查询时获得一个游标实例的工厂类,设置为null,代表使用系统默认的工厂类
     }
 
@@ -42,14 +38,11 @@ public class MDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-<<<<<<< HEAD
         db.execSQL("CREATE TABLE IF NOT EXISTS mDatabase (" + "scheduleId integer primary key autoincrement," + "title varchar," +
                 "content varchar," +
                 "value integer," +
                 "maxvalue integer," + "beizhu varchar)");
-=======
         db.execSQL("CREATE TABLE IF NOT EXISTS mSchedule (scheduleId integer primary key autoincrement, title Text, content Text, value INTEGER, maxvalue INTEGER,beizhu Text)");
->>>>>>> 66cf93fc14209b0bd29170f37e32c14270db2246
     }
 
     @Override
@@ -102,7 +95,6 @@ public class MDatabaseHelper extends SQLiteOpenHelper {
         getWritableDatabase().update("mDatabase", cv, "scheduleId=?",
                 args);
     }
-<<<<<<< HEAD
     public void todelete(boolean isall,String clause){
         if (isall){
             getWritableDatabase().delete("mDatabase","1",null);//第二个参数为1就删除全部
@@ -111,8 +103,6 @@ public class MDatabaseHelper extends SQLiteOpenHelper {
             getWritableDatabase().delete("mDatabase","scheduleId=?",arg);
         }
     }
-=======
->>>>>>> 66cf93fc14209b0bd29170f37e32c14270db2246
     public String gettitle(Cursor c) {
         return(c.getString(1));
     }
@@ -132,8 +122,5 @@ public class MDatabaseHelper extends SQLiteOpenHelper {
     public String getbeizhu(Cursor c) {
         return(c.getString(5));
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> 66cf93fc14209b0bd29170f37e32c14270db2246
 }
