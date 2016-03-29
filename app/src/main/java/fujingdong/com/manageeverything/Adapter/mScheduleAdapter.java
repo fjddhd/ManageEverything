@@ -20,6 +20,8 @@ import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +31,7 @@ import com.gc.materialdesign.views.Slider;
 import com.gc.materialdesign.widgets.SnackBar;
 
 import java.util.List;
+import java.util.zip.Inflater;
 
 import fujingdong.com.manageeverything.Activity.BaseActivity;
 import fujingdong.com.manageeverything.Activity.Schedule;
@@ -58,8 +61,8 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
 
     @Override
     public mViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v=View.inflate(context, R.layout.rv_schedule_item, null);
-//        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_schedule_item, parent, false);
+//        View v=View.inflate(context, R.layout.rv_schedule_item, null);
+        View v = LayoutInflater.from(context).inflate(R.layout.rv_schedule_item, parent, false);//为了让其中的cardview获得属性（这里主要是margin）
         final mViewHolder holder = new mViewHolder(v);
 //        v.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -88,7 +91,7 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
             holder.iv_finish.setVisibility(View.VISIBLE);
             holder.iv_edit.setVisibility(View.GONE);
             holder.cardBr.setVisibility(View.GONE);
-            holder.slider.setVisibility(View.GONE);
+            holder.sliderParent.setVisibility(View.GONE);
             holder.iv_edit.setClickable(false);//关闭已经隐藏的edit键的点击能力
 //            holder.cardTvTitle.setLongClickable(false);//关闭标题的长按修改事件,由于必须设置长点监听才能有效，所以再这不用
         }else {//只有没完成的时候才给设置长按监听显示dialog
@@ -171,29 +174,25 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
                         });
                         builder.show();
                     }
-
                     @Override
                     public void onAnimationRepeat(Animation animation) {
 
                     }
                 });
-
-
-
             }
         });
         holder.iv_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //“编辑“按钮的点击事件，用于slider的显示和隐藏
-                if (holder.slider.getVisibility() == View.GONE) {
+                if (holder.sliderParent.getVisibility() == View.GONE) {
                     //如果进度条处于隐藏状态，按下按钮，则会把进度条展示出来，并且更改图标，然后再判断完成按钮需不需要展示
-                    holder.slider.setVisibility(View.VISIBLE);
+                    holder.sliderParent.setVisibility(View.VISIBLE);
                     holder.iv_edit.setImageResource(R.drawable.ic_unfold_less_24dp);
                     AlphaAnimation alpha = new AlphaAnimation(0, 1);
                     alpha.setDuration(1500);//时间
                     alpha.setFillAfter(true);//保持动画状态
-                    holder.slider.startAnimation(alpha);
+                    holder.sliderParent.startAnimation(alpha);
 //                    System.out.println("按钮准备开始显示啊！！");
                     if (holder.slider.getValue() == holder.slider.getMax()) {//如果此时进度条数值等于最大值，那就显示完成按钮
 //                        System.out.println("按钮显示啊！！");
@@ -241,7 +240,7 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
 
                         @Override
                         public void onAnimationEnd(Animation animation) {
-                            holder.slider.setVisibility(View.GONE);
+                            holder.sliderParent.setVisibility(View.GONE);
 
 
                         }
@@ -318,7 +317,7 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
                             set1.addAnimation(ta1);
                             set2.addAnimation(scale1);
                             set2.addAnimation(ta2);
-                            holder.slider.startAnimation(set1);
+                            holder.sliderParent.startAnimation(set1);
                             holder.cardBr.startAnimation(set2);
                             set1.setAnimationListener(new Animation.AnimationListener() {
                                 @Override
@@ -329,7 +328,7 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
                                 @Override
                                 public void onAnimationEnd(Animation animation) {
                                     holder.cardBr.setVisibility(View.GONE);
-                                    holder.slider.setVisibility(View.GONE);
+                                    holder.sliderParent.setVisibility(View.GONE);
                                     holder.iv_edit.setClickable(false);//关闭已经隐藏的edit键的点击能力
                                     holder.cardTvTitle.setLongClickable(false);//关闭长按
                                     holder.cardTvContent.setLongClickable(false);//关闭长按
@@ -501,13 +500,15 @@ public class mScheduleAdapter extends RecyclerView.Adapter<mScheduleAdapter.mVie
         public ImageView iv_close;
         public ImageView iv_finish;
         public TextView idRecord;
+        public LinearLayout sliderParent;
 
 
         public mViewHolder(View itemView) {
             super(itemView);
             cardTvTitle = (TextView) itemView.findViewById(R.id.card_tvtitle);
             cardTvContent = (TextView) itemView.findViewById(R.id.card_tvcontent);
-            slider = (Slider) itemView.findViewById(R.id.sliderprogress);
+            sliderParent = (LinearLayout) itemView.findViewById(R.id.sliderprogress);
+            slider= (Slider) sliderParent.getChildAt(1);
             cardBr = (ButtonRectangle) itemView.findViewById(R.id.btn_complete);
             iv_edit= (ImageView) itemView.findViewById(R.id.iv_edit);
             iv_close= (ImageView) itemView.findViewById(R.id.iv_off);

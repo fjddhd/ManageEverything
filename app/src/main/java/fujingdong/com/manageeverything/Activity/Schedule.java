@@ -2,16 +2,20 @@ package fujingdong.com.manageeverything.Activity;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonRectangle;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import fujingdong.com.manageeverything.Adapter.mScheduleAdapter;
@@ -48,7 +52,11 @@ public class Schedule extends BaseActivity {
             rv.setHasFixedSize(true);//使RecyclerView保持固定的大小,这样会提高RecyclerView的性能。
             rv.setLayoutManager(new LinearLayoutManager(this));
             rv.setAdapter(new mScheduleAdapter(this, list,mDatabaseHelper));
-            rv.addItemDecoration(new RecycleViewDivider(this,LinearLayoutManager.VERTICAL,10,R.color.light_gery));//添加分割线，方法在utils中，其中高度是像素
+            //获取设备密度
+            DisplayMetrics dm=new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(dm);
+            int density = (int) dm.density;
+            rv.addItemDecoration(new RecycleViewDivider(this,LinearLayoutManager.VERTICAL,1*density,R.color.light_gery));//添加分割线，方法在utils中，其中高度是像素
         }
 
 
@@ -58,6 +66,15 @@ public class Schedule extends BaseActivity {
     public void initData() {
         super.initData();
         toolbartitle.setText("我的日程");
+        toolbar.setNavigationIcon(R.drawable.arrow_left_24dp);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
 //        ScheduleBean s1=new ScheduleBean();
 //        ScheduleBean s2=new ScheduleBean();
 //        s1.setId(0);
@@ -105,7 +122,7 @@ public class Schedule extends BaseActivity {
                         }
                     }).show();
                 }
-                //注意！！！（数据库中第一个id是1，list中第一个是0）
+                //注意！！！（数据库中第一个id是1，list中第一个是0,不过适配器中用了一个不可见不占位的textview去记录从数据库得到的scheduleId）
             }
         }
         all.close();

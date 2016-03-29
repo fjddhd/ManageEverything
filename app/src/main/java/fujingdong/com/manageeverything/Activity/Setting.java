@@ -51,7 +51,7 @@ public class Setting extends BaseActivity implements View.OnClickListener{
     @Override
     protected void onResume() {
         super.onResume();
-        System.out.println("resume");
+//        System.out.println("resume");
         PrefUtils.setBoolean(this, "isfanhuied", false);//把是否点过一次返回初始化为没点过
     }
 
@@ -62,18 +62,20 @@ public class Setting extends BaseActivity implements View.OnClickListener{
      * @param event
      * @return
      */
+    long waittime =2000;
+    long touchtime=0;
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode==KeyEvent.KEYCODE_BACK && event.getRepeatCount()==0){
-            if (!PrefUtils.getBoolean(this,"isfanhuied",false)){
-            Toast.makeText(this,"再按一次返回键可以退出",Toast.LENGTH_SHORT).show();
-            PrefUtils.setBoolean(this,"isfanhuied",true);
-            return true;
+            long currenttime=System.currentTimeMillis();
+            System.out.println("从CurrentTimeMillis（）中获取的值"+currenttime);
+            if ((currenttime-touchtime)>waittime){
+                Toast.makeText(Setting.this,"再次点击返回退出",Toast.LENGTH_SHORT).show();
+                touchtime=currenttime;
             }else {
-                PrefUtils.setBoolean(this, "isfanhuied", false);//把是否点过一次返回初始化为没点过
                 finish();
-                return true;
             }
+            return true;
         }
         return super.onKeyDown(keyCode, event);
     }
