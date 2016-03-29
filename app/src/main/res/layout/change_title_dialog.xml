@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="编辑日程标题"
+        android:textSize="20sp"
+        android:textColor="#000"/>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/til_dialog_changetitle"
+        >
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/et_dialog_changetitle"
+            android:hint="请输入新的标题"/>
+    </android.support.design.widget.TextInputLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp">
+    <com.gc.materialdesign.views.ButtonFlat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bf_dialog_change_title_quxiao"
+        android:background="@color/colorPrimary"
+        android:text="取消编辑"
+        android:layout_toLeftOf="@+id/bf_dialog_change_title_queren"></com.gc.materialdesign.views.ButtonFlat>
+    <com.gc.materialdesign.views.ButtonFlat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bf_dialog_change_title_queren"
+        android:background="@color/colorPrimary"
+        android:text="确认编辑"
+        android:layout_alignParentRight="true"
+        ></com.gc.materialdesign.views.ButtonFlat></RelativeLayout>
+
+</LinearLayout>
